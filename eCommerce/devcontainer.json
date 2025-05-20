@@ -1,0 +1,20 @@
+{
+    "name": "Codespace with Docker",
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu", 
+    "features": {
+      "docker-in-docker": "latest"
+    },
+    "hostRequirements": {
+      "cpus": 2,
+      "memory": "4gb"
+    },
+    "forwardPorts": [1433],
+    "postCreateCommand": "docker version",
+    "build": {
+        "dockerfile": "Dockerfile"
+        }
+    }
+
+
+
+  
