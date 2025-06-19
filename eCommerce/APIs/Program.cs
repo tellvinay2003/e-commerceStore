@@ -3,6 +3,17 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add CORS policy 
+builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder => {
+                builder.WithOrigins("http://localhost:4200");
+                builder.WithMethods("GET", "POST");
+                builder.AllowAnyHeader();
+            });
+        });
+
+
 # region Service region
 
 // Add services to the container.
@@ -11,7 +22,7 @@ builder.Services.AddControllers();
 
 // add db context with options for SqlLite
 builder.Services.AddDbContext<StoreContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
     
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -22,6 +33,8 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
+
+
 
 #region Middleware Region
 
@@ -41,6 +54,8 @@ app.UseHttpsRedirection();
 // sets HttpContext.User 
 app.UseAuthentication();
 
+// Use CORS policy
+app.UseCors();
 // middleware sequence 3
 // ensures policy checks
 app.UseAuthorization();
